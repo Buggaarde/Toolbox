@@ -1,0 +1,1 @@
+from fancy_histogram import fancy_histogram
