@@ -1,0 +1,3 @@
+[submodule "Alternate-solvers"]
+	path = Alternate-solvers
+	url = https://github.com/AUESG/Alternate-solvers
