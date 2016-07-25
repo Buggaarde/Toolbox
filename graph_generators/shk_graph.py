@@ -14,8 +14,12 @@ def shk_graph(N, p, q, r, s,
     
     Parameters
     ----------
-    N : int
-      The number of nodes in the network.
+    N : int or list
+      If int, N is the number of nodes in the network. If list, N is
+      a list of touples containing the node positions in the network.
+      Furthermore, if N0 is int, N0 becomes the first N0 positions in N,
+      and if N0 is list the N0 gets overwritten with the first len(N0)
+      positions in N.
     p : float
       The probability of constructing an additional redundancy line
       attached at each new node
@@ -27,11 +31,11 @@ def shk_graph(N, p, q, r, s,
     s : float
       The probability of splitting an existing line in each growth
       step
-    N0 : int or numpy array, optional
+    N0 : int or list, optional
       If int, N0 is the number of initial nodes with which to 
       initialize the graph, with positions drawn from 'distribution'.
-      If numpy array, N0 is the positions of the initial nodes
-      with which to initilize the graph (default=10)
+      If list, N0 is a list of touples of the positions of the initial
+      nodes with which to initilize the graph (default=10)
     distribution : string, optional
       Keyword indicating which distribution the remaining node
       positions must be drawn from (default='uniform')
@@ -98,7 +102,10 @@ def shk_graph(N, p, q, r, s,
                             target_value = t_val
                             connected_nodes = (node1, node2)
         G.add_edge(*connected_nodes)
-    G.name = 'SHK_graph({}, {}, {}, {}, {})'.format(N, p, q, r, s)
+    if type(N) is int:
+        G.name = 'SHK_graph({}, {}, {}, {}, {})'.format(N, p, q, r, s)
+    elif type(N) is list:
+        G.name = 'SHK_graph({}, {}, {}, {}, {})'.format(len(N), p, q, r, s)
 
     # Growing the network
     while len(G.nodes()) < N:
