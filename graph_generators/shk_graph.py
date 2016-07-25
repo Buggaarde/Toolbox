@@ -67,11 +67,24 @@ def shk_graph(N, p, q, r, s,
             G[m][n]['length'] = length(G, m, n)
 
         G = nx.minimum_spanning_tree(G, weight='length')
+    elif type(N0) is list:
+        G = nx.complete_graph(len(N0))
+        pos = dict(zip(G.nodes(), N0))
+        nx.set_node_attributes(G, 'pos', pos)
+        # Assigning lengths to the edges
+        for m,n in G.edges_iter():
+            G[m][n]['length'] = length(G, m, n)
+
+        G = nx.minimum_spanning_tree(G, weight='length')
+        
             
     else:
         raise nx.NetworkXError('NetworkXError N0 must be integer')
 
-    m = int(np.round(N0*(1 - s)*(p + q)))
+    if type(N0) is int:
+        m = int(np.round(N0*(1 - s)*(p + q)))
+    elif type(N0) is list:
+        m = int(np.round(len(N0)*(1 - s)*(p + q)))
     # print(m)
     for a in xrange(m):
         target_value = 0
@@ -85,7 +98,7 @@ def shk_graph(N, p, q, r, s,
                             target_value = t_val
                             connected_nodes = (node1, node2)
         G.add_edge(*connected_nodes)
-    G.name = 'SHK_graph({}, {}, {}, {}, {}, {})'.format(N, p, q, r, s, N0)
+    G.name = 'SHK_graph({}, {}, {}, {}, {})'.format(N, p, q, r, s)
 
     # Growing the network
     while len(G.nodes()) < N:
@@ -152,10 +165,25 @@ def shk_graph(N, p, q, r, s,
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    params = (1000, 0.2, 0.4, 1, 0.5)
-    N0 = 50
+    params = (50, 0.2, 0.4, 1, 0.5)
+    N0 = zip(np.random.uniform(0, 1, 25), np.random.uniform(0, 1, 25))
     G = shk_graph(*params, N0=N0)
-    print(G.name)
+    pos = nx.get_node_attributes(G, 'pos')
+    nx.draw(G, pos=pos)
+    plt.show()
+    G = shk_graph(*params, N0=N0)
+    pos = nx.get_node_attributes(G, 'pos')
+    nx.draw(G, pos=pos)
+    plt.show()
+    G = shk_graph(*params, N0=N0)
+    pos = nx.get_node_attributes(G, 'pos')
+    nx.draw(G, pos=pos)
+    plt.show()
+    G = shk_graph(*params, N0=N0)
+    pos = nx.get_node_attributes(G, 'pos')
+    nx.draw(G, pos=pos)
+    plt.show()
+    G = shk_graph(*params, N0=N0)
     pos = nx.get_node_attributes(G, 'pos')
     nx.draw(G, pos=pos)
     plt.show()
