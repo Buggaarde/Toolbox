@@ -58,8 +58,15 @@ def shk_graph(N, p, q, r, s,
         if m==n:
             print m
         return (path_length + 1)**r/length(G, m, n)
-            
+
+    M = list(N) # Takes a copy of N, so what we can use it in the future.
     # Initializing the network
+    if type(M) is list:
+        if type(N0) is int:
+            N0 = M[:N0]
+        elif type(N0) is list:
+            N0 = M[:len(N0)]
+            
     if type(N0) is int:
         G = nx.complete_graph(N0)
         pos = dict(zip(G.nodes(),
@@ -102,13 +109,18 @@ def shk_graph(N, p, q, r, s,
                             target_value = t_val
                             connected_nodes = (node1, node2)
         G.add_edge(*connected_nodes)
-    if type(N) is int:
-        G.name = 'SHK_graph({}, {}, {}, {}, {})'.format(N, p, q, r, s)
-    elif type(N) is list:
-        G.name = 'SHK_graph({}, {}, {}, {}, {})'.format(len(N), p, q, r, s)
+    if type(M) is int:
+        G.name = 'SHK_graph({}, {}, {}, {}, {})'.format(M, p, q, r, s)
+    elif type(M) is list:
+        G.name = 'SHK_graph({}, {}, {}, {}, {})'.format(len(M), p, q, r, s)
 
+    if type(M) is int:
+        lenN = M
+    elif type(M) is list:
+        lenN = len(M)
+            
     # Growing the network
-    while len(G.nodes()) < N:
+    while len(G.nodes()) < lenN:
         # print(len(G.nodes()))
         P = random.uniform(0, 1)
         nodes = len(G.nodes())
@@ -126,7 +138,10 @@ def shk_graph(N, p, q, r, s,
         else: # place a new node according to distribution,
               # and attach to spatially closest neighbor
             
-            new_pos = (random.uniform(0, 1), random.uniform(0, 1))
+            if type(M) is int:
+                new_pos = (random.uniform(0, 1), random.uniform(0, 1))
+            elif type(M) is list:
+                new_pos = M.pop()
             G.add_node(nodes, pos=new_pos)
             min_dist = 2
             min_dist_node = -1
@@ -172,24 +187,9 @@ def shk_graph(N, p, q, r, s,
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    params = (50, 0.2, 0.4, 1, 0.5)
-    N0 = zip(np.random.uniform(0, 1, 25), np.random.uniform(0, 1, 25))
-    G = shk_graph(*params, N0=N0)
-    pos = nx.get_node_attributes(G, 'pos')
-    nx.draw(G, pos=pos)
-    plt.show()
-    G = shk_graph(*params, N0=N0)
-    pos = nx.get_node_attributes(G, 'pos')
-    nx.draw(G, pos=pos)
-    plt.show()
-    G = shk_graph(*params, N0=N0)
-    pos = nx.get_node_attributes(G, 'pos')
-    nx.draw(G, pos=pos)
-    plt.show()
-    G = shk_graph(*params, N0=N0)
-    pos = nx.get_node_attributes(G, 'pos')
-    nx.draw(G, pos=pos)
-    plt.show()
+    N = zip(np.random.uniform(0, 1, 50), np.random.uniform(0, 1, 50))
+    params = (N, 0.2, 0.4, 1, 0)
+    N0 = 10
     G = shk_graph(*params, N0=N0)
     pos = nx.get_node_attributes(G, 'pos')
     nx.draw(G, pos=pos)
@@ -197,15 +197,3 @@ if __name__ == '__main__':
     plt.savefig('minimal_spanning_tree.pdf')
     plt.clf()
     plt.close()
-    
-
-        
-
-
-
-
-
-
-
-
-
