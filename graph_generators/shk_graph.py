@@ -59,7 +59,11 @@ def shk_graph(N, p, q, r, s,
             print m
         return (path_length + 1)**r/length(G, m, n)
 
-    M = list(N) # Takes a copy of N, so what we can use it in the future.
+    # print(type(N))
+    if type(N) is list:
+        M = list(N) # Takes a copy of N, so what we can use it in the future.
+    elif type(N) is int:
+        M = N
     # Initializing the network
     if type(M) is list:
         if type(N0) is int:
