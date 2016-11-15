@@ -9,9 +9,8 @@ def grid_graph(dim, scale=1.0, periodic=False):
     in which case the square is scaled accordingly.
     '''
     Network = nx.grid_graph(dim=dim, periodic=periodic)
-    n = len(Network.nodes())
     positions = Network.nodes()
-    positions = [(scale*i/float(n-1), scale*j/float(n-1))
+    positions = [(scale*i/float(dim[0]-1), scale*j/float(dim[1]-1))
                  for (i, j) in positions]
     Network = nx.convert_node_labels_to_integers(Network)
     pos = dict(zip(Network.nodes(), positions))

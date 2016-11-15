@@ -1,7 +1,9 @@
 #! /usr/bin/env python
+from __future__ import print_function
 import numpy as np
 import networkx as nx
 import random
+
 
 def shk_graph(N, p, q, r, s,
               N0 = 10,
@@ -56,7 +58,7 @@ def shk_graph(N, p, q, r, s,
         shortest_path = nx.shortest_path(G, source=m, target=n)
         path_length = len(shortest_path) - 1
         if m==n:
-            print m
+            print(m)
         return (path_length + 1)**r/length(G, m, n)
 
     # print(type(N))

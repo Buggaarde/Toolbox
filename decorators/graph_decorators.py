@@ -36,8 +36,8 @@ def make_connected(attempts=10000, connect_subgraphs=False):
 def return_largest_connected_subgraph(silent=True):
     def outer_wrapper(Graph):
         @wraps(Graph)
-	def func_wrapper(*args, **kwargs):
-	    G = Graph(*args, **kwargs)
+        def func_wrapper(*args, **kwargs):
+            G = Graph(*args, **kwargs)
             name = G.name # resetting the indicies changes the name
                           # so we save it here, for later retrieval.
             subgraphs = list(nx.connected_component_subgraphs(G))
@@ -49,5 +49,5 @@ def return_largest_connected_subgraph(silent=True):
             if not silent:
                 print('Largest connected subgraph: {}'.format(len(G)))
             return G
-	return func_wrapper
+        return func_wrapper
     return outer_wrapper

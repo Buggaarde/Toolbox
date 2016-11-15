@@ -1,5 +1,4 @@
 import networkx as nx
-import numpy as np
 import toolbox.decorators as dec
 
 @dec.return_largest_connected_subgraph(silent=False)
